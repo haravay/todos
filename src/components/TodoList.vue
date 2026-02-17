@@ -1,14 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { cn } from '@/lib/utils'
-import type { Todo } from "@/types/todo"
-import TodoItem from './TodoItem.vue'
 import { useTodoStyle, type TodoShape, type TodoSize, type TodoVariant } from '@/lib/todo-style'
 
 const props = defineProps<{
-    todos: Todo[]
-    onDelete: (id: string) => void
-    onToggle: (id: string) => void
     size?: TodoSize
     shape?: TodoShape
     variant?: TodoVariant
@@ -43,7 +38,7 @@ const listClass = computed(() =>
 
 <template>
     <TransitionGroup name="list" tag="ul" :class="listClass">
-        <TodoItem v-for="todo in todos" :key="todo.id" :todo="todo" :onDelete="onDelete" :onToggle="onToggle" />
+        <slot />
     </TransitionGroup>
 </template>
 
