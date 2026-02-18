@@ -20,24 +20,24 @@ const style = useTodoStyle(props)
 const slots = useSlots()
 
 const sizeClasses = {
-    small: 'p-4 text-sm',
-    medium: 'p-6 text-base',
-    large: 'p-8 text-lg',
+    small: 'todo-container--small',
+    medium: 'todo-container--medium',
+    large: 'todo-container--large',
 } as const
 
 const shapeClasses = {
-    rounded: 'rounded-[28px]',
-    square: 'rounded-none',
+    rounded: 'todo-container--rounded',
+    square: 'todo-container--square',
 } as const
 
 const variantClasses = {
-    primary: 'glass',
-    secondary: 'bg-white/80 border border-black/10 shadow-black/10',
+    primary: 'todo-container--primary',
+    secondary: 'todo-container--secondary',
 } as const
 
 const containerClass = computed(() => 
     cn(
-        'w-full max-w-xl',
+        'todo-container',
         sizeClasses[style.value.size],
         shapeClasses[style.value.shape],
         variantClasses[style.value.variant],
@@ -46,7 +46,7 @@ const containerClass = computed(() =>
 </script>
 
 <template>
-    <section :class="cn('flex flex-col gap-6', containerClass)">
+    <section :class="cn('todo-container-layout', containerClass)">
         <header v-if="slots.header">
             <slot name="header" />
         </header>

@@ -10,6 +10,7 @@ const STORAGE_KEY = 'todos-v1'
 const todos = ref<Todo[]>([])
 type TodoFilter = 'all' | 'completed' | 'running'
 const filter = ref<TodoFilter>('all')
+const searchQuery = ref('')
 
 function safeParseTodos(raw: string | null): Todo[] {
   if (!raw) return []
@@ -62,9 +63,14 @@ function setFilter(nextFilter: TodoFilter) {
 }
 
 const filteredTodos = computed(() => {
-  if (filter.value === 'completed') return todos.value.filter((todo) => todo.done)
-  if (filter.value === 'running') return todos.value.filter((todo) => !todo.done)
-  return todos.value
+  const query = searchQuery.value.trim().toLowerCase()
+
+  return todos.value.filter((todo) => {
+    const byFilter =
+      filter.value === 'completed' ? todo.done : filter.value === 'running' ? !todo.done : true
+    const bySearch = query ? todo.text.toLowerCase().includes(query) : true
+    return byFilter && bySearch
+  })
 })
 
 onMounted(() => {
@@ -81,24 +87,24 @@ watch(
 </script>
 
 <template>
-  <div class="min-h-full bg-linear-to-br from-slate-900 via-indigo-900 to-fuchsia-900 px-4 py-10">
-    <div class="mx-auto flex justify-center">
+  <div class="app-page">
+    <div class="app-wrap">
       <TodoContainer size="medium" shape="rounded" variant="primary">
         <template #header>
-          <div class="flex items-start justify-between gap-4">
+          <div class="app-header">
             <div>
-              <h1 class="text-2xl font-semibold tracking-tight">TODO</h1>
+              <h1 class="app-title">TODO</h1>
             </div>
 
-            <div class="text-sm text-slate-600">
-              Score:
-              <span class="font-semibold text-slate-900">{{ todos.length }}</span>
+            <div class="app-score">
+              Count:
+              <span class="app-score-value">{{ todos.length }}</span>
             </div>
           </div>
         </template>
 
         <template #default>
-          <div class="mt-6">
+          <div class="app-content">
             <TodoInput :onAdd="addTodo" size="small" />
             <TodoList>
               <TodoItem
@@ -112,47 +118,61 @@ watch(
 
             <div
               v-if="todos.length === 0"
-              class="mt-6 rounded-2xl border border-white/40 bg-white/50 p-5 text-center ring-1 ring-black/5"
+              class="app-empty"
             >
-              <p class="mt-2 text-sm text-slate-600">There is no tasks yet</p>
+              <p class="app-empty-text">There is no tasks yet</p>
             </div>
             <div
               v-else-if="filteredTodos.length === 0"
-              class="mt-6 rounded-2xl border border-white/40 bg-white/50 p-5 text-center ring-1 ring-black/5"
+              class="app-empty"
             >
-              <p class="mt-2 text-sm text-slate-600">No tasks in selected filter</p>
+              <p class="app-empty-text">
+                {{ searchQuery.trim() ? 'No tasks found by search' : 'No tasks in selected filter' }}
+              </p>
             </div>
           </div>
         </template>
 
         <template #footer>
-          <div class="mt-2 flex flex-wrap items-center gap-4 text-sm text-slate-700">
-            <label class="inline-flex cursor-pointer items-center gap-2">
-              <input
-                type="checkbox"
-                :checked="filter === 'all'"
-                @change="setFilter('all')"
-              />
-              <span>All</span>
-            </label>
+          <div class="app-footer">
+            <div class="app-filters">
+              <label class="app-filter-label">
+                <input
+                  type="radio"
+                  name="todo-filter"
+                  :checked="filter === 'all'"
+                  @change="setFilter('all')"
+                />
+                <span>All</span>
+              </label>
 
-            <label class="inline-flex cursor-pointer items-center gap-2">
-              <input
-                type="checkbox"
-                :checked="filter === 'completed'"
-                @change="setFilter('completed')"
-              />
-              <span>Completed</span>
-            </label>
+              <label class="app-filter-label">
+                <input
+                  type="radio"
+                  name="todo-filter"
+                  :checked="filter === 'completed'"
+                  @change="setFilter('completed')"
+                />
+                <span>Completed</span>
+              </label>
 
-            <label class="inline-flex cursor-pointer items-center gap-2">
-              <input
-                type="checkbox"
-                :checked="filter === 'running'"
-                @change="setFilter('running')"
-              />
-              <span>Running</span>
-            </label>
+              <label class="app-filter-label">
+                <input
+                  type="radio"
+                  name="todo-filter"
+                  :checked="filter === 'running'"
+                  @change="setFilter('running')"
+                />
+                <span>Running</span>
+              </label>
+            </div>
+
+            <input
+              v-model="searchQuery"
+              type="text"
+              placeholder="Search tasks..."
+              class="app-search-input"
+            />
           </div>
         </template>
       </TodoContainer>

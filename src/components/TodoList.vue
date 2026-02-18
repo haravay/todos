@@ -12,19 +12,19 @@ const props = defineProps<{
 const style = useTodoStyle(props)
 
 const gapBySize = {
-    small: 'mt-3 space-y-2',
-    medium: 'mt-4 space-y-3',
-    large: 'mt-5 space-y-4',
+    small: 'todo-list--small',
+    medium: 'todo-list--medium',
+    large: 'todo-list--large',
 } as const
 
 const shapeClasses = {
-    rounded: 'rounded-2xl',
-    square: 'rounded-none',
+    rounded: 'todo-list--rounded',
+    square: 'todo-list--square',
 } as const
 
 const variantClasses = {
-    primary: 'bg-transparent',
-    secondary: 'rounded-2xl border border-black/10 bg-white/40 p-2',
+    primary: 'todo-list--primary',
+    secondary: 'todo-list--secondary',
 } as const
 
 const listClass = computed(() =>
@@ -37,20 +37,7 @@ const listClass = computed(() =>
 </script>
 
 <template>
-    <TransitionGroup name="list" tag="ul" :class="listClass">
+    <TransitionGroup name="todo-list" tag="ul" :class="listClass">
         <slot />
     </TransitionGroup>
 </template>
-
-<style scoped>
-.list-enter-active,
-.list-leave-active {
-    transition: all 220ms ease;
-}
-
-.list-enter-from,
-.list-leave-to {
-    opacity: 0;
-    transform: translateY(-8px);
-}
-</style>

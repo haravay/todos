@@ -1,11 +1,294 @@
 @import "tailwindcss";
 
+@theme {
+  --color-background: oklch(1 0 0);
+  --color-foreground: oklch(0.145 0 0);
+  --color-primary: oklch(0.546 0.245 262.881);
+  --color-primary-foreground: oklch(0.985 0 0);
+  --color-secondary: oklch(0.269 0 0);
+  --color-secondary-foreground: oklch(0.985 0 0);
+  --color-muted-foreground: oklch(0.556 0 0);
+  --color-accent: oklch(0.967 0.001 286.375);
+  --color-accent-foreground: oklch(0.205 0 0);
+  --color-input: oklch(0.871 0 0);
+  --color-destructive: oklch(0.577 0.245 27.325);
+  --color-ring: oklch(0.708 0 0);
+}
+
 @layer base {
   html, body, #app { height: 100%; }
   body { @apply antialiased text-slate-800; }
 }
 
+@layer components {
+  .app-page {
+    @apply min-h-full bg-linear-to-br from-slate-900 via-indigo-900 to-fuchsia-900 px-4 py-10;
+  }
+
+  .app-wrap {
+    @apply mx-auto flex justify-center;
+  }
+
+  .app-header {
+    @apply flex items-start justify-between gap-4;
+  }
+
+  .app-title {
+    @apply text-2xl font-semibold tracking-tight;
+  }
+
+  .app-score {
+    @apply text-sm text-slate-600;
+  }
+
+  .app-score-value {
+    @apply font-semibold text-slate-900;
+  }
+
+  .app-content {
+    @apply mt-6;
+  }
+
+  .app-empty {
+    @apply mt-6 rounded-2xl border border-white/40 bg-white/50 p-5 text-center ring-1 ring-black/5;
+  }
+
+  .app-empty-text {
+    @apply mt-2 text-sm text-slate-600;
+  }
+
+  .app-footer {
+    @apply mt-2 flex flex-wrap items-center gap-3 text-sm text-slate-700;
+  }
+
+  .app-filters {
+    @apply flex flex-wrap items-center gap-4;
+  }
+
+  .app-filter-label {
+    @apply inline-flex cursor-pointer items-center gap-2;
+  }
+
+  .app-search-input {
+    @apply h-9 w-full min-w-56 rounded-md border border-slate-400 bg-white px-3 py-1 text-sm text-slate-900 placeholder:text-slate-500 outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50;
+  }
+
+  @media (min-width: 640px) {
+    .app-search-input {
+      @apply ml-auto max-w-64;
+    }
+  }
+
+  .todo-container-layout {
+    @apply flex flex-col gap-6;
+  }
+
+  .todo-container {
+    @apply w-full max-w-xl;
+  }
+
+  .todo-container--small {
+    @apply p-4 text-sm;
+  }
+
+  .todo-container--medium {
+    @apply p-6 text-base;
+  }
+
+  .todo-container--large {
+    @apply p-8 text-lg;
+  }
+
+  .todo-container--rounded {
+    @apply rounded-[28px];
+  }
+
+  .todo-container--square {
+    @apply rounded-none;
+  }
+
+  .todo-container--primary {
+    @apply bg-white/70 backdrop-blur-xl border border-white/40 shadow-xl shadow-black/10;
+  }
+
+  .todo-container--secondary {
+    @apply bg-white/80 border border-black/10 shadow-black/10;
+  }
+
+  .todo-input-row {
+    @apply flex gap-2;
+  }
+
+  .todo-item {
+    @apply flex items-center justify-between gap-3 border ring-1 ring-black/5 shadow-sm transition hover:shadow-md;
+  }
+
+  .todo-item--small {
+    @apply px-3 py-2;
+  }
+
+  .todo-item--medium {
+    @apply px-4 py-3;
+  }
+
+  .todo-item--large {
+    @apply px-5 py-4;
+  }
+
+  .todo-item--rounded {
+    @apply rounded-2xl;
+  }
+
+  .todo-item--square {
+    @apply rounded-none;
+  }
+
+  .todo-item--primary {
+    @apply border-white/40 bg-white/60;
+  }
+
+  .todo-item--secondary {
+    @apply border-black/10 bg-white/80;
+  }
+
+  .todo-item-label {
+    @apply flex min-w-0 items-center gap-3;
+  }
+
+  .todo-item-checkbox {
+    @apply h-5 w-5 shrink-0;
+  }
+
+  .todo-item-text {
+    @apply min-w-0 truncate transition;
+  }
+
+  .todo-item-text--done {
+    @apply text-slate-400 line-through;
+  }
+
+  .todo-item-text--active {
+    @apply text-slate-800;
+  }
+
+  .todo-list--small {
+    @apply mt-3 space-y-2;
+  }
+
+  .todo-list--medium {
+    @apply mt-4 space-y-3;
+  }
+
+  .todo-list--large {
+    @apply mt-5 space-y-4;
+  }
+
+  .todo-list--rounded {
+    @apply rounded-2xl;
+  }
+
+  .todo-list--square {
+    @apply rounded-none;
+  }
+
+  .todo-list--primary {
+    @apply bg-transparent;
+  }
+
+  .todo-list--secondary {
+    @apply rounded-2xl border border-black/10 bg-white/40 p-2;
+  }
+
+  .ui-input {
+    @apply flex h-9 w-full rounded-md border border-slate-400 bg-white px-3 py-1 text-base text-slate-900 shadow-xs transition outline-none file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-slate-500 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm;
+  }
+
+  .ui-button {
+    @apply inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all outline-none disabled:pointer-events-none disabled:opacity-50 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40;
+  }
+
+  .ui-button > svg {
+    @apply pointer-events-none shrink-0;
+  }
+
+  .ui-button > svg:not([class*='size-']) {
+    @apply size-4;
+  }
+
+  .ui-button--default {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90;
+  }
+
+  .ui-button--destructive {
+    @apply bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40;
+  }
+
+  .ui-button--outline {
+    @apply border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50;
+  }
+
+  .ui-button--secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80;
+  }
+
+  .ui-button--ghost {
+    @apply hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50;
+  }
+
+  .ui-button--link {
+    @apply text-primary underline-offset-4 hover:underline;
+  }
+
+  .ui-button--size-default {
+    @apply h-9 px-4 py-2;
+  }
+
+  .ui-button--size-default:has(> svg) {
+    @apply px-3;
+  }
+
+  .ui-button--size-sm {
+    @apply h-8 rounded-md gap-1.5 px-3;
+  }
+
+  .ui-button--size-sm:has(> svg) {
+    @apply px-2.5;
+  }
+
+  .ui-button--size-lg {
+    @apply h-10 rounded-md px-6;
+  }
+
+  .ui-button--size-lg:has(> svg) {
+    @apply px-4;
+  }
+
+  .ui-button--size-icon {
+    @apply size-9;
+  }
+
+  .ui-button--size-icon-sm {
+    @apply size-8;
+  }
+
+  .ui-button--size-icon-lg {
+    @apply size-10;
+  }
+}
+
+@layer utilities {
+  .todo-list-enter-active,
+  .todo-list-leave-active {
+    transition: all 220ms ease;
+  }
+
+  .todo-list-enter-from,
+  .todo-list-leave-to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
 @layer utilities {
   .glass { @apply bg-white/70 backdrop-blur-xl border border-white/40 shadow-xl shadow-black/10; }
 }
-
